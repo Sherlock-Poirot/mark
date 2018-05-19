@@ -2,9 +2,11 @@ package com.detective.mark1.util;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.servlet.Filter;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -48,5 +50,24 @@ public class ShiroConfig {
     public MyRealm myRealm() {
         MyRealm myRealm = new MyRealm();
         return myRealm;
+    }
+
+    /**
+     * 配置过滤器
+     * @return
+     */
+    @Bean
+    public FilterRegistrationBean doFilterRegistration(){
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(sessionFilter());
+        registration.addUrlPatterns("/*");
+        registration.addInitParameter("paramName", "paramValue");
+        registration.setName("sessionFilter");
+        return registration;
+    }
+
+    @Bean(name = "sessionFilter")
+    public Filter sessionFilter(){
+        return new ShiroSesssionFilter();
     }
 }
