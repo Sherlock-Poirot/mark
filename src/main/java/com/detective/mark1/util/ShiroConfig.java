@@ -28,10 +28,10 @@ public class ShiroConfig {
         //以下是过滤链，按顺序过滤，所以/**需要放最后
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         // TODO 等待权限的完善
-        filterChainDefinitionMap.put("/test/**","authc,perms[perm1]");
-        filterChainDefinitionMap.put("/login.html","anon");
-        filterChainDefinitionMap.put("/door/login","anon");
-        filterChainDefinitionMap.put("/**","authc");
+//        filterChainDefinitionMap.put("/test/**","authc,perms[perm1]");
+//        filterChainDefinitionMap.put("/login.html","anon");
+//        filterChainDefinitionMap.put("/door/login","anon");
+        filterChainDefinitionMap.put("/**","anon");
         shiroFilterFactoryBean.setLoginUrl("/login.html");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
