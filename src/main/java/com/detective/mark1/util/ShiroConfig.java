@@ -3,6 +3,7 @@ package com.detective.mark1.util;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import javax.servlet.Filter;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -22,6 +23,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ShiroConfig {
 
+    @Bean("hashedCredentialsMatcher")
+    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
+        // 指定加密方式MD5
+        credentialsMatcher.setHashAlgorithmName("MD5");
+        // 加密次数
+        credentialsMatcher.setHashIterations(1024);
+        credentialsMatcher.setStoredCredentialsHexEncoded(true);
+        return credentialsMatcher;
+    }
+
     @Bean("ShiroFilter")
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
@@ -30,11 +42,12 @@ public class ShiroConfig {
         //以下是过滤链，按顺序过滤，所以/**需要放最后
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<String, String>();
         // TODO 等待权限的完善
+        shiroFilterFactoryBean.setLoginUrl("/login.html");
+        shiroFilterFactoryBean.setSuccessUrl("/index.html");
 //        filterChainDefinitionMap.put("/test/**","authc,perms[perm1]");
 //        filterChainDefinitionMap.put("/login.html","anon");
 //        filterChainDefinitionMap.put("/door/login","anon");
         filterChainDefinitionMap.put("/**","anon");
-        shiroFilterFactoryBean.setLoginUrl("/login.html");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
@@ -52,22 +65,4 @@ public class ShiroConfig {
         return myRealm;
     }
 
-    /**
-     * 配置过滤器
-     * @return
-     */
-    @Bean
-    public FilterRegistrationBean doFilterRegistration(){
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(sessionFilter());
-        registration.addUrlPatterns("/*");
-        registration.addInitParameter("paramName", "paramValue");
-        registration.setName("sessionFilter");
-        return registration;
-    }
-
-    @Bean(name = "sessionFilter")
-    public Filter sessionFilter(){
-        return new ShiroSesssionFilter();
-    }
 }

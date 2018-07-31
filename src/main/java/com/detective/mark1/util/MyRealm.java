@@ -11,6 +11,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.detective.mark1.entity.User;
 import com.detective.mark1.service.PermissionService;
@@ -59,7 +60,10 @@ public class MyRealm extends AuthorizingRealm {
         if (user == null) {
             throw new UnknownAccountException("该账号不存在");
         }
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getUsername(),user.getPassword(),getName());
+        //盐值
+        ByteSource credentialsSalt = ByteSource.Util.bytes(user.getUsername());
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(),
+                credentialsSalt, getName());
         return info;
     }
 }
