@@ -1,4 +1,4 @@
-package com.detective.mark1.util;
+package com.detective.mark1.config;
 
 import java.io.IOException;
 import javax.servlet.Filter;

@@ -1,4 +1,4 @@
-package com.detective.mark1.util;
+package com.detective.mark1.config;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,6 +10,8 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import com.detective.mark1.util.MyCredentialsMatcher;
+import com.detective.mark1.util.MyRealm;
 
 /**
  * @author 石天楠
@@ -23,16 +25,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ShiroConfig {
 
-    @Bean("hashedCredentialsMatcher")
-    public HashedCredentialsMatcher hashedCredentialsMatcher(){
-        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
-        // 指定加密方式MD5
-        credentialsMatcher.setHashAlgorithmName("MD5");
-        // 加密次数
-        credentialsMatcher.setHashIterations(1024);
-        credentialsMatcher.setStoredCredentialsHexEncoded(true);
-        return credentialsMatcher;
-    }
+//    @Bean("hashedCredentialsMatcher")
+//    public HashedCredentialsMatcher hashedCredentialsMatcher(){
+//        HashedCredentialsMatcher credentialsMatcher = new HashedCredentialsMatcher();
+//        // 指定加密方式MD5
+//        credentialsMatcher.setHashAlgorithmName("MD5");
+//        // 加密次数
+//        credentialsMatcher.setHashIterations(1024);
+//        credentialsMatcher.setStoredCredentialsHexEncoded(true);
+//        return credentialsMatcher;
+//    }
 
     @Bean("ShiroFilter")
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
@@ -62,6 +64,7 @@ public class ShiroConfig {
     @Bean
     public MyRealm myRealm() {
         MyRealm myRealm = new MyRealm();
+        myRealm.setCredentialsMatcher(new MyCredentialsMatcher());
         return myRealm;
     }
 

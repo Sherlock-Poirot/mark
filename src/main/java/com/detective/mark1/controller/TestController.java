@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.detective.mark1.cache.RedisClient;
 import com.detective.mark1.entity.User;
 import com.detective.mark1.mapper.UserMapper;
 import lombok.extern.log4j.Log4j2;
@@ -26,9 +27,14 @@ public class TestController {
     @Autowired
     private UserMapper mapper;
 
+    @Autowired
+    private RedisClient redisClient;
+
     @GetMapping("hello")
     public String test(){
-        return "hello spring boot";
+        redisClient.remove("ss");
+        redisClient.set("ss","ttt1111");
+        return redisClient.get("ss").toString();
     }
 
     @GetMapping("hello/get")

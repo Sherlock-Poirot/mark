@@ -20,10 +20,7 @@ import com.detective.mark1.service.UserService;
 
 /**
  * @author 石天楠
- * @since 2018/5/4
- * <p>
- * 实现自己的Realm继承与Realm的子类AuthorizingRealm
- * 重写当中的两个方法doGetAuthenticationInfo(认证)
+ * @since 2018/5/4 <p> 实现自己的Realm继承与Realm的子类AuthorizingRealm 重写当中的两个方法doGetAuthenticationInfo(认证)
  * doGetAuthorizationInfo(授权)
  */
 public class MyRealm extends AuthorizingRealm {
@@ -64,6 +61,10 @@ public class MyRealm extends AuthorizingRealm {
         ByteSource credentialsSalt = ByteSource.Util.bytes(user.getUsername());
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(),
                 credentialsSalt, getName());
+//        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(),
+//                getName());
+//        CredentialsMatcher credentialsMatcher = new CredentialsMatcher();
+//        credentialsMatcher.doCredentialsMatch(token,info);
         return info;
     }
 }

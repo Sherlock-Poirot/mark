@@ -8,4 +8,6 @@ import com.detective.mark1.entity.User;
  */
 public interface UserService {
     User getUserByUsername(String username);
+
+    void registerUser(String username,String password);
 }
